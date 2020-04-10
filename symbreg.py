@@ -90,4 +90,3 @@ def control_main():
 
 if __name__ == "__main__":
     _, control_log, _ = control_main()
-    print(control_log)
