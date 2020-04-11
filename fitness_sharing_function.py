@@ -16,13 +16,14 @@ class FitnessSharingFunction:
         return np.sum(raw_fitness_vector / shared_fitness_vector)
 
     def get_semantics(self, ind):
-        return np.array([ind(*X) for X, _ in self._cases])
+        v_ind = np.vectorize(ind)
+        return v_ind(X)
 
     def get_raw_fitness(self, ind_semantics):
         raise NotImplementedError()
 
     def get_shared_fitness(self, ind_semantics, raw_fitness):
-        semantic_matrix = np.tile(ind_semantics, (self._score_matrix.shape[0], ind_semantics.size))
+        semantic_matrix = np.tile(ind_semantics, self._score_matrix.shape)
         comparrison_matrix = semantic_matrix == self._score_matrix
         return np.sum(comparrision_matrix * raw_fitness, axis=0)
 
