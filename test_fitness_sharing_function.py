@@ -45,3 +45,19 @@ def test_get_raw_fitness():
 
     assert my_fsf.get_raw_fitness(y_error) == 3 / 4
     assert my_fsf.get_raw_fitness(y) == 0
+
+def test_register_semantics():
+    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+    y = np.array([0, 1, 1, 0])
+
+    fsf = FitnessSharingFunction(X, y)
+
+    NEW_SEMANTICS = np.array([0, 1, 0, 1])
+    INITIAL_SCORE_MATRIX = np.zeros((len(y), 1))
+    FINAL_SCORE_MATRIX = np.array([0, 0, 0, 0], [0, 1, 0, 1])
+
+    assert fsf._score_matrix == INITIAL_SCORE_MATRIX
+
+    fsf.register_semantics(NEW_SEMANTICS)
+
+    assert fsf._score_matrix == FINAL_SCORE_MATRIX
