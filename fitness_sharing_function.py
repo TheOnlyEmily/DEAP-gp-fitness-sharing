@@ -23,8 +23,7 @@ class FitnessSharingFunction:
         raise NotImplementedError()
 
     def get_shared_fitness(self, ind_semantics, raw_fitness):
-        semantic_matrix = np.tile(ind_semantics, self._score_matrix.shape)
-        comparrison_matrix = semantic_matrix == self._score_matrix
+        comparrison_matrix = ind_semantics == self._score_matrix
         return np.sum(comparrision_matrix.astype(np.int64) * raw_fitness, axis=0)
 
     def register_semantics(self, ind_semantics):
