@@ -17,14 +17,17 @@ class FitnessSharingFunction:
 
     def get_semantics(self, ind):
         v_ind = np.vectorize(ind)
-        return v_ind(X)
+        return v_ind(self._cases[0])
 
     def get_raw_fitness(self, ind_semantics):
         raise NotImplementedError()
 
     def get_shared_fitness(self, ind_semantics, raw_fitness):
-        comparrison_matrix = ind_semantics == self._score_matrix
-        return np.sum(comparrision_matrix.astype(np.int64) * raw_fitness, axis=0)
+        if self._score_matrix:
+            comparrison_matrix = ind_semantics == self._score_matrix
+            return np.sum(comparrision_matrix.astype(np.int64) * raw_fitness, axis=0)
+        else:
+            return np.zeros(ind_sematics.size)
 
     def register_semantics(self, ind_semantics):
         if self._score_matrix:
