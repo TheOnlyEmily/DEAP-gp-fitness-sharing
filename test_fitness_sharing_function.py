@@ -77,4 +77,4 @@ def test_get_shared_fitness():
 
     fsf = FitnessSharingFunction(X, y)
 
-    assert fsf.get_shared_fitness(IND_SEMANTICS1, IND_FITNESS1) == np.ones(IND_SEMANTCS.SIZE)
+    assert fsf.get_shared_fitness(IND_SEMANTICS1, IND_FITNESS1) == np.ones(IND_SEMANTCS.size)
