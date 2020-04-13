@@ -5,7 +5,7 @@ class FitnessSharingFunction:
 
     def __init__(self, X, y):
         self._cases = [X, y]
-        self._score_matrix = np.zeros((1, len(y)))
+        self._score_matrix = None
 
     def __call__(self, ind):
         ind_semantics = self.get_semantics(ind)
@@ -27,4 +27,7 @@ class FitnessSharingFunction:
         return np.sum(comparrision_matrix.astype(np.int64) * raw_fitness, axis=0)
 
     def register_semantics(self, ind_semantics):
-        self._score_matrix = np.vstack(self._score_matrix, ind_semantics)
+        if self._score_matrix:
+            self._score_matrix = np.vstack(self._score_matrix, ind_semantics)
+        else:
+            self._score_matrix = np.array([ind_semantics])
