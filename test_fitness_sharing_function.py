@@ -52,12 +52,12 @@ def test_register_semantics():
 
     fsf = FitnessSharingFunction(X, y)
 
-    NEW_SEMANTICS = np.array([0, 1, 0, 1])
-    INITIAL_SCORE_MATRIX = None
-    FINAL_SCORE_MATRIX = np.array([[0, 1, 0, 1]])
+    NEW_SEMANTICS1 = np.array([0, 1, 0, 1])
+    SCORE_MATRIX1 = None
+    SCORE_MATRIX2 = np.array([[0, 1, 0, 1]])
 
-    assert fsf._score_matrix == INITIAL_SCORE_MATRIX
+    assert fsf._score_matrix == SCORE_MATRIX1
 
-    fsf.register_semantics(NEW_SEMANTICS)
+    fsf.register_semantics(NEW_SEMANTICS1)
 
-    assert fsf._score_matrix == FINAL_SCORE_MATRIX
+    assert fsf._score_matrix == SCORE_MATRIX2
