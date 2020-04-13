@@ -67,3 +67,6 @@ def test_register_semantics():
     fsf.register_semantics(NEW_SEMANTICS2)
 
     assert fsf._score_matrix == SCORE_MATRIX3
+
+def test_get_shared_fitness():
+    pass
