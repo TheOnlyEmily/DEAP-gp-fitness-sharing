@@ -69,4 +69,12 @@ def test_register_semantics():
     assert fsf._score_matrix == SCORE_MATRIX3
 
 def test_get_shared_fitness():
-    pass
+    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+    y = np.array([0, 1, 1, 0])
+
+    IND_SEMANTICS1 = np.array([0, 1, 1, 0])
+    IND_FITNESS1 = 0
+
+    fsf = FitnessSharingFunction(X, y)
+
+    assert fsf.get_shared_fitness(IND_SEMANTICS1, IND_FITNESS1) == np.ones(IND_SEMANTCS.SIZE)
