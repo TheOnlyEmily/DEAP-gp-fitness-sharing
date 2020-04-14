@@ -10,7 +10,8 @@ class FitnessSharingFunction:
     def __call__(self, ind):
         base_rewards = map(self.get_reward, self.get_semantics(ind))
         adjusted_reward = sum(self.get_shared_fitness(ind))
-        modified_rewards = map(lambda v: v / adjusted_reward, base_rewards)
+        reward_adjust = lambda v: (v / adjusted_reward) if adjusted_reward > 0 else v
+        modified_rewards = map(reward_adjust, base_rewards)
         self.register_semantics(ind)
         return sum(modified_rewards)
 
