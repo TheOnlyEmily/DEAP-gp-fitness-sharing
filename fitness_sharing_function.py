@@ -21,10 +21,10 @@ class FitnessSharingFunction:
     def get_raw_fitness(self, ind_semantics):
         raise NotImplementedError()
 
-    def get_shared_fitness(self, ind_semantics, raw_fitness):
+    def get_shared_fitness(self, ind_semantics, error_vector):
         if self._score_matrix:
             comparrison_matrix = ind_semantics == self._score_matrix
-            rv = np.sum(comparrision_matrix.astype(np.int64) * raw_fitness, axis=0)
+            rv = np.sum(comparrision_matrix.astype(np.int64) * error_vector, axis=0)
             rv[rv == 0] = 1
             return rv
         else:

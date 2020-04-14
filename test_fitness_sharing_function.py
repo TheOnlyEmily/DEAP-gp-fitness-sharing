@@ -73,8 +73,20 @@ def test_get_shared_fitness():
     y = np.array([0, 1, 1, 0])
 
     IND_SEMANTICS1 = np.array([0, 1, 1, 0])
+    IND_SEMANTICS2 = np.array([0, 1, 0, 0])
+    IND_SEMANTICS3 = np.array([0, 0, 1, 0])
     IND_FITNESS1 = 0
+    IND_FITNESS2 = 3 / 4
+    IND_FITNESS3 = 3 / 4
 
     fsf = FitnessSharingFunction(X, y)
 
-    assert fsf.get_shared_fitness(IND_SEMANTICS1, IND_FITNESS1) == np.ones(IND_SEMANTCS.size)
+    assert fsf.get_shared_fitness(IND_SEMANTICS1, IND_FITNESS1) == np.array([1, 1, 1, 1])
+
+    fsf.register_semantics(IND_SEMANTICS1)
+
+    assert fsf.get_shared_fitness(IND_SEMANTICS2, IND_FITNESS2) == np.array([3/4, 3/4, 1, 3/4])
+
+    fsf.register_semantics(IND_SEMANTICS2)
+
+    assert fsf.get_shared_fitness(IND_SEMANTICS3, IND_FITNESS3) == np.array([])
