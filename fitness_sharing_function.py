@@ -1,4 +1,5 @@
 import numpy as np
+from operator import truediv as div
 
 
 class FitnessSharingFunction:
@@ -10,7 +11,7 @@ class FitnessSharingFunction:
     def __call__(self, ind):
         base_rewards = map(self.get_reward, self.get_semantics(ind))
         adjusted_reward = sum(self.get_shared_fitness(ind))
-        reward_adjust = lambda v: (v / adjusted_reward) if adjusted_reward > 0 else v
+        reward_adjust = lambda v: div(v, adjusted_reward) if adjusted_reward > 0 else v
         modified_rewards = map(reward_adjust, base_rewards)
         self.register_semantics(ind)
         return sum(modified_rewards)
