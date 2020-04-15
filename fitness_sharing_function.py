@@ -36,9 +36,8 @@ class FitnessSharingFunction:
         else:
             self._semantic_matrix = np.array([self.get_semantics(ind)])
 
-    @staticmethod
-    def reward_adjust(reward):
+    def reward_adjust(self reward):
         if self._adjusted_reward > 0:
-            return reward / reward_adjust
+            return reward / self._adjusted_reward
         else:
             return reward
