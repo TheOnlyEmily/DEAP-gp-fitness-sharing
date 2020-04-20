@@ -14,7 +14,7 @@ class FitnessSharingFunction:
         self.register_semantics(ind)
         return sum(modified_rewards)
 
-    def get_reward(self, ind):
+    def get_reward(self, ind_semantics):
         raise NotImplementedError()
 
     def get_semantics(self, ind):
