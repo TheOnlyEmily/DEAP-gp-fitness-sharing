@@ -114,4 +114,4 @@ class TestGetSharedFitness:
 
         fsf.register_semantics(IND_SEMANTICS)
 
-        assert fsf.get_shared_fitness(IND_SEMANTICS) > 1
+        assert fsf.get_shared_fitness(IND_SEMANTICS) < 1
