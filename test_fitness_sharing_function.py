@@ -141,3 +141,4 @@ def test_call():
     assert fitness1 == fsf.get_reward(fsf.get_semantics(IND1))
     assert fitness1 < fitness2
     assert fitness3 < fitness1
+    assert fitness3 == 0
