@@ -78,7 +78,7 @@ def test_register_semantics():
 
 class TestGetSharedFitness:
 
-    def test_with_no_semantic_matrix():
+    def test_with_no_semantic_matrix(self):
         X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
         y = np.array([0, 1, 1, 0])
 
@@ -96,3 +96,16 @@ class TestGetSharedFitness:
 
         assert fsf._semantic_matrix is None
         assert fsf.get_shared_fitness(IND_SEMANTICS) == NO_ADJUSTMENT
+
+    def test_with_semantic_matrix(self):
+        X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+        y = np.array([0, 1, 1, 0])
+
+
+        class SemDistanceFSF(FitnessSharingFunction):
+
+            def get_reward(self, ind_semantics):
+                return (self._cases[1] - ind_semantics) ** 2
+
+
+        fsf = SemDistanceFSF(X, y)
