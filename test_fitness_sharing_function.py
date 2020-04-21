@@ -115,3 +115,29 @@ class TestGetSharedFitness:
         fsf.register_semantics(IND_SEMANTICS)
 
         assert fsf.get_shared_fitness(IND_SEMANTICS) < 1
+
+
+def test_call():
+    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+    y = np.array([0, 1, 1, 0])
+
+
+    class SemDistanceFSF(FitnessSharingFunction):
+
+        def get_reward(self, ind_semantics):
+            return (self._cases[1] - ind_semantics) ** 2
+
+
+    fsf = SemDistanceFSF(X, y)
+
+    IND1 = lambda a, b: a && b
+    IND2 = lambda a, b: a && b
+    IND3 = lambda a, b: a ^ b
+
+    fitness1 = fsf(IND1)
+    fitness2 = fsf(IND2)
+    fitness3 = fsf(IND3)
+
+    assert fitness1 == fsf.get_reward(fsf.get_semantics(IND1))
+    assert fitness1 < fitness2
+    assert fitness3 < fitness1
