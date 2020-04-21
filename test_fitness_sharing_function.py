@@ -54,3 +54,23 @@ class TestGetReward:
 
         assert fsf.get_reward(perfect_solution) == 0
         assert fsf.get_reward(okay_solution) > 0
+
+
+def test_register_semantics():
+    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+    y = np.array([0, 1, 1, 0])
+
+    IND_SEMANTICS1 = np.array([0, 0, 0, 1])
+    IND_SEMANTICS2 = np.array([0, 1, 1, 0])
+
+    fsf = FitnessSharingFunction(X, y)
+
+    assert fsf._semantic_matrix is None
+
+    fsf.register_semantics(IND_SEMANTICS1)
+
+    assert fsf._semantic_matrix == np.array([IND_SEMANTICS1])
+
+    fsf.register_semantics(IND_SEMANTICS2)
+
+    assert fsf._semantic_matrix == np.array([IND_SEMANTICS1, IND_SEMANTICS2])
