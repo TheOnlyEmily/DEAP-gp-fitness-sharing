@@ -42,7 +42,15 @@ class TestGetReward:
         X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
         y = np.array([0, 1, 1, 0])
 
+        perfect_solution = np.array([0, 1, 1, 0])
+        okay_solution = np.array([0, 1, 0, 0])
+
         class SemDistanceFSF(FitnessSharingFunction):
 
             def get_reward(self, ind_semantics):
                 return (self._cases[1] - ind_semantics) ** 2
+
+        fsf = SemDistanceFSF(X, y)
+
+        assert fsf.get_reward(perfect_solution) == 0
+        assert fsf.get_reward(okay_solution) > 0
