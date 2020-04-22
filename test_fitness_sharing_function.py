@@ -53,8 +53,8 @@ class TestGetReward:
 
         fsf = SemDistanceFSF(X, y)
 
-        assert fsf.get_reward(perfect_solution) == 0
-        assert fsf.get_reward(okay_solution) > 0
+        assert np.all(fsf.get_reward(perfect_solution) == 0)
+        assert np.all(fsf.get_reward(okay_solution) > 0)
 
 
 def test_register_semantics():
