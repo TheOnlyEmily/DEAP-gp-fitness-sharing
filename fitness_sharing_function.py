@@ -20,10 +20,10 @@ class FitnessSharingFunction:
         v_ind = np.vectorize(ind)
         return v_ind(*self._cases[0])
 
-    def get_shared_fitness(self, ind_semantics):
+    def get_shared_fitness(self, ind):
         if self._semantic_matrix is not None:
             weight_vector = np.sum(ind_semantics == self._semantic_matrix, axis=0)
-            fit_adjust = np.sum(weight_vector * self.get_reward(ind_semantics))
+            fit_adjust = np.sum(weight_vector * self.get_reward(self.get_semantics(ind))
             return fit_adjust if fit_adjust > 0 else 1
         else:
             return 1
