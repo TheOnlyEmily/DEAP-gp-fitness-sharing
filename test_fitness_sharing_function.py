@@ -67,7 +67,7 @@ def test_register_semantics():
     fsf = FitnessSharingFunction(X, y)
 
     IND_SEMANTICS1 = fsf.get_semantics(IND1)
-    IND_SEMANTTCS2 = fsf.get_semantics(IND2)
+    IND_SEMANTICS2 = fsf.get_semantics(IND2)
 
     assert fsf._semantic_matrix is None
 
