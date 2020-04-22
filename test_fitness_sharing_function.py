@@ -21,7 +21,7 @@ def test_get_semantics():
 
     fsf = FitnessSharingFunction(X, y)
 
-    assert fsf.get_semantics(xor) == y
+    assert np.all(fsf.get_semantics(xor) == y)
 
 
 class TestGetReward:
