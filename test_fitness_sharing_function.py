@@ -96,10 +96,10 @@ class TestGetSharedFitness:
         fsf = SemDistanceFSF(X, y)
 
         NO_ADJUSTMENT = 1
-        IND_SEMANTICS = np.array([0, 0, 0, 1])
+        IND = lambda a, b: a & b
 
         assert fsf._semantic_matrix is None
-        assert fsf.get_shared_fitness(IND_SEMANTICS) == NO_ADJUSTMENT
+        assert fsf.get_shared_fitness(IND) == NO_ADJUSTMENT
 
     def test_with_semantic_matrix(self):
         X = np.array([[0, 1, 0, 1], [0, 0, 1, 1]])
