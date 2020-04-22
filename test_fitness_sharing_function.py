@@ -119,7 +119,7 @@ class TestGetSharedFitness:
 
         fsf.register_semantics(IND)
 
-        assert fsf.get_shared_fitness(IND_SEMANTICS) < 1
+        assert fsf.get_shared_fitness(IND_SEMANTICS) > 1
 
 
 def test_call():
