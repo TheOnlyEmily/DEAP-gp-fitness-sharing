@@ -8,11 +8,10 @@ class FitnessSharingFunction:
         self._semantic_matrix = None
 
     def __call__(self, ind):
-        base_rewards = self.get_reward(self.get_semantics(ind))
+        base_reward = self.get_reward(self.get_semantics(ind))
         reward_adjust = self.get_shared_fitness(ind)
-        adjusted_rewards = map(lambda v: v / reward_adjust, base_rewards)
         self.register_semantics(ind)
-        return sum(adjusted_rewards)
+        return base_reward / reward_adjust
 
     def get_reward(self, ind_semantics):
         raise NotImplementedError()
