@@ -61,20 +61,20 @@ def test_register_semantics():
     X = np.array([[0, 1, 0, 1], [0, 0, 1, 1]])
     y = np.array([0, 1, 1, 0])
 
-    IND_SEMANTICS1 = np.array([0, 0, 0, 1])
-    IND_SEMANTICS2 = np.array([0, 1, 1, 0])
+    IND1 = lambda a, b: a & b
+    IND2 = lambda a, b: a ^ b
 
     fsf = FitnessSharingFunction(X, y)
 
     assert fsf._semantic_matrix is None
 
-    fsf.register_semantics(IND_SEMANTICS1)
+    fsf.register_semantics(IND1)
 
-    assert fsf._semantic_matrix == np.array([IND_SEMANTICS1])
+    assert fsf._semantic_matrix == np.array([IND1])
 
-    fsf.register_semantics(IND_SEMANTICS2)
+    fsf.register_semantics(IND2)
 
-    assert fsf._semantic_matrix == np.array([IND_SEMANTICS1, IND_SEMANTICS2])
+    assert fsf._semantic_matrix == np.array([IND1, IND2])
 
 
 class TestGetSharedFitness:
