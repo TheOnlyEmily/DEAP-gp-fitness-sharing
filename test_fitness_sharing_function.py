@@ -130,8 +130,8 @@ def test_call():
 
     fsf = SemDistanceFSF(X, y)
 
-    IND1 = lambda a, b: a && b
-    IND2 = lambda a, b: a && b
+    IND1 = lambda a, b: a & b
+    IND2 = lambda a, b: a & b
     IND3 = lambda a, b: a ^ b
 
     fitness1 = fsf(IND1)
