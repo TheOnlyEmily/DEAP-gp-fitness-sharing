@@ -22,7 +22,7 @@ class FitnessSharingFunction:
         return v_ind(*self._cases[0])
 
     def get_shared_fitness(self, ind_semantics):
-        if self._semantic_matrix:
+        if self._semantic_matrix is not None:
             weight_vector = np.sum(ind_semantics == self._semantic_matrix, axis=0)
             fit_adjust = np.sum(weight_vector * self.get_reward(ind_semantics))
             return fit_adjust if fit_adjust > 0 else 1
@@ -30,7 +30,7 @@ class FitnessSharingFunction:
             return 1
 
     def register_semantics(self, ind):
-        if self._semantic_matrix:
+        if self._semantic_matrix is not None:
             ind_semantics = self.get_semantics(ind)
             semantic_stack = (self._semantic_matrix, ind_semantics)
             self._semantic_matrix = np.vstack(semantic_stack)
