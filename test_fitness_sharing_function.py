@@ -1,4 +1,5 @@
 import numpy as np
+import pytest
 from fitness_sharing_function import FitnessSharingFunction
 
 
