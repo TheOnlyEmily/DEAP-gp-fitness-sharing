@@ -73,7 +73,7 @@ def test_register_semantics():
 
     fsf.register_semantics(IND1)
 
-    assert fsf._semantic_matrix == np.array([IND1])
+    assert fsf._semantic_matrix == np.array([IND_SEMANTICS1])
 
     fsf.register_semantics(IND2)
 
