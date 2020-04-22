@@ -73,11 +73,11 @@ def test_register_semantics():
 
     fsf.register_semantics(IND1)
 
-    assert fsf._semantic_matrix == np.array([IND_SEMANTICS1])
+    assert np.all(fsf._semantic_matrix == np.array([IND_SEMANTICS1]))
 
     fsf.register_semantics(IND2)
 
-    assert fsf._semantic_matrix == np.array([IND_SEMANTICS1, IND_SEMANTICS2])
+    assert np.all(fsf._semantic_matrix == np.array([IND_SEMANTICS1, IND_SEMANTICS2]))
 
 
 class TestGetSharedFitness:
