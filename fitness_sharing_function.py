@@ -22,8 +22,9 @@ class FitnessSharingFunction:
 
     def get_shared_fitness(self, ind):
         if self._semantic_matrix is not None:
+            ind_semantics = self.get_semantics(ind)
             weight_vector = np.sum(ind_semantics == self._semantic_matrix, axis=0)
-            fit_adjust = np.sum(weight_vector * self.get_reward(self.get_semantics(ind))
+            fit_adjust = np.sum(weight_vector * self.get_reward(ind_semantics))
             return fit_adjust if fit_adjust > 0 else 1
         else:
             return 1
