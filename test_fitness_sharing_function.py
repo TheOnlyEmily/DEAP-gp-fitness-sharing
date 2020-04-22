@@ -114,11 +114,11 @@ class TestGetSharedFitness:
 
         fsf = SemDistanceFSF(X, y)
 
-        IND_SEMANTICS = np.array([0, 0, 0, 1])
+        IND = lambda a, b: a & b
 
-        fsf.register_semantics(IND_SEMANTICS)
+        fsf.register_semantics(IND)
 
-        assert fsf.get_shared_fitness(IND_SEMANTICS) < 1
+        assert fsf.get_shared_fitness(IND) < 1
 
 
 def test_call():
