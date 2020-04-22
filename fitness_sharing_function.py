@@ -19,7 +19,7 @@ class FitnessSharingFunction:
 
     def get_semantics(self, ind):
         v_ind = np.vectorize(ind)
-        return v_ind(self._cases[0])
+        return v_ind(*self._cases[0])
 
     def get_shared_fitness(self, ind_semantics):
         if self._semantic_matrix:
