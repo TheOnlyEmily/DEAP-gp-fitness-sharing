@@ -11,7 +11,7 @@ class FitnessSharingFunction:
         base_reward = self.get_reward(self.get_semantics(ind))
         reward_adjust = self.get_shared_fitness(ind)
         self.register_semantics(ind)
-        return base_reward / reward_adjust
+        return base_reward * reward_adjust
 
     def get_reward(self, ind_semantics):
         raise NotImplementedError()
