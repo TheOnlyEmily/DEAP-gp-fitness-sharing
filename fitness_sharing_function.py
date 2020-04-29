@@ -13,6 +13,10 @@ class SemanticFitnessSharingFunction:
         self.register_semantics(ind)
         return base_reward * reward_adjust
 
+    @property
+    def target_semantics(self):
+        return self.cases[1].copy()
+
     def get_fitness(self, ind_semantics):
         raise NotImplementedError()
 
