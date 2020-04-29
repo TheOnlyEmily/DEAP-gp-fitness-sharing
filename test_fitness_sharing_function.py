@@ -1,6 +1,6 @@
 import numpy as np
 import pytest
-from fitness_sharing_function import FitnessSharingFunction
+from fitness_sharing_function import SemanticFitnessSharingFunction
 
 
 def test_init():
@@ -9,7 +9,7 @@ def test_init():
 
     CASE_LIST = [X, y]
 
-    fsf = FitnessSharingFunction(X, y)
+    fsf = SemanticFitnessSharingFunction(X, y)
 
     assert fsf._cases == CASE_LIST
     assert fsf._semantic_matrix is None
@@ -20,7 +20,7 @@ def test_get_semantics():
     X = np.array([[0, 1, 0, 1], [0, 0, 1, 1]])
     y = np.array([0, 1, 1, 0])
 
-    fsf = FitnessSharingFunction(X, y)
+    fsf = SemanticFitnessSharingFunction(X, y)
 
     assert np.all(fsf.get_semantics(xor) == y)
 
@@ -33,7 +33,7 @@ class TestGetReward:
 
         function_semantics = np.array([0, 0, 0, 1])
 
-        fsf = FitnessSharingFunction(X, y)
+        fsf = SemanticFitnessSharingFunction(X, y)
 
         with pytest.raises(NotImplementedError):
             fsf.get_reward(function_semantics)
@@ -46,7 +46,7 @@ class TestGetReward:
         perfect_solution = np.array([0, 1, 1, 0])
         okay_solution = np.array([0, 1, 0, 0])
 
-        class SemDistanceFSF(FitnessSharingFunction):
+        class SemDistanceFSF(SemanticFitnessSharingFunction):
 
             def get_reward(self, ind_semantics):
                 return np.mean((self._cases[1] - ind_semantics) ** 2)
@@ -64,7 +64,7 @@ def test_register_semantics():
     IND1 = lambda a, b: a & b
     IND2 = lambda a, b: a ^ b
 
-    fsf = FitnessSharingFunction(X, y)
+    fsf = SemanticFitnessSharingFunction(X, y)
 
     IND_SEMANTICS1 = fsf.get_semantics(IND1)
     IND_SEMANTICS2 = fsf.get_semantics(IND2)
@@ -87,7 +87,7 @@ class TestGetSharedFitness:
         y = np.array([0, 1, 1, 0])
 
 
-        class SemDistanceFSF(FitnessSharingFunction):
+        class SemDistanceFSF(SemanticFitnessSharingFunction):
 
             def get_reward(self, ind_semantics):
                 return np.mean((self._cases[1] - ind_semantics) ** 2)
@@ -106,7 +106,7 @@ class TestGetSharedFitness:
         y = np.array([0, 1, 1, 0])
 
 
-        class SemDistanceFSF(FitnessSharingFunction):
+        class SemDistanceFSF(SemanticFitnessSharingFunction):
 
             def get_reward(self, ind_semantics):
                 return np.mean((self._cases[1] - ind_semantics) ** 2)
@@ -127,7 +127,7 @@ def test_call():
     y = np.array([0, 1, 1, 0])
 
 
-    class SemDistanceFSF(FitnessSharingFunction):
+    class SemDistanceFSF(SemanticFitnessSharingFunction):
 
         def get_reward(self, ind_semantics):
             return np.mean((self._cases[1] - ind_semantics) ** 2)
