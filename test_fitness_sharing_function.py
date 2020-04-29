@@ -36,7 +36,7 @@ class TestGetReward:
         fsf = SemanticFitnessSharingFunction(X, y)
 
         with pytest.raises(NotImplementedError):
-            fsf.get_reward(function_semantics)
+            fsf.get_fitness(function_semantics)
 
 
     def test_method_implemented(self):
@@ -48,13 +48,13 @@ class TestGetReward:
 
         class SemDistanceFSF(SemanticFitnessSharingFunction):
 
-            def get_reward(self, ind_semantics):
+            def get_fitness(self, ind_semantics):
                 return np.mean((self._cases[1] - ind_semantics) ** 2)
 
         fsf = SemDistanceFSF(X, y)
 
-        assert np.all(fsf.get_reward(perfect_solution) == 0)
-        assert np.all(fsf.get_reward(okay_solution) > 0)
+        assert np.all(fsf.get_fitness(perfect_solution) == 0)
+        assert np.all(fsf.get_fitness(okay_solution) > 0)
 
 
 def test_register_semantics():
@@ -89,7 +89,7 @@ class TestGetSharedFitness:
 
         class SemDistanceFSF(SemanticFitnessSharingFunction):
 
-            def get_reward(self, ind_semantics):
+            def get_fitness(self, ind_semantics):
                 return np.mean((self._cases[1] - ind_semantics) ** 2)
 
 
@@ -108,7 +108,7 @@ class TestGetSharedFitness:
 
         class SemDistanceFSF(SemanticFitnessSharingFunction):
 
-            def get_reward(self, ind_semantics):
+            def get_fitness(self, ind_semantics):
                 return np.mean((self._cases[1] - ind_semantics) ** 2)
 
 
@@ -129,7 +129,7 @@ def test_call():
 
     class SemDistanceFSF(SemanticFitnessSharingFunction):
 
-        def get_reward(self, ind_semantics):
+        def get_fitness(self, ind_semantics):
             return np.mean((self._cases[1] - ind_semantics) ** 2)
 
 
@@ -143,7 +143,7 @@ def test_call():
     fitness2 = fsf(IND2)
     fitness3 = fsf(IND3)
 
-    assert fitness1 == fsf.get_reward(fsf.get_semantics(IND1))
+    assert fitness1 == fsf.get_fitness(fsf.get_semantics(IND1))
     assert fitness1 < fitness2
     assert fitness3 < fitness1
     assert fitness3 == 0
