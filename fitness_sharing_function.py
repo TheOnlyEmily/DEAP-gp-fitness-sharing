@@ -15,7 +15,7 @@ class SemanticFitnessSharingFunction:
 
     @property
     def target_semantics(self):
-        return self.cases[1].copy()
+        return self._cases[1].copy()
 
     def get_fitness(self, ind_semantics):
         raise NotImplementedError()
