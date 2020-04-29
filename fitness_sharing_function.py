@@ -8,12 +8,12 @@ class SemanticFitnessSharingFunction:
         self._semantic_matrix = None
 
     def __call__(self, ind):
-        base_reward = self.get_reward(self.get_semantics(ind))
+        base_reward = self.get_fitness(self.get_semantics(ind))
         reward_adjust = self.get_shared_fitness(ind)
         self.register_semantics(ind)
         return base_reward * reward_adjust
 
-    def get_reward(self, ind_semantics):
+    def get_fitness(self, ind_semantics):
         raise NotImplementedError()
 
     def get_semantics(self, ind):
@@ -23,7 +23,7 @@ class SemanticFitnessSharingFunction:
         if self._semantic_matrix is not None:
             ind_semantics = self.get_semantics(ind)
             weight_vector = np.sum(ind_semantics == self._semantic_matrix, axis=0)
-            fit_adjust = np.sum(weight_vector * self.get_reward(ind_semantics))
+            fit_adjust = np.sum(weight_vector * self.get_fitness(ind_semantics))
             return fit_adjust if fit_adjust > 0 else 1
         else:
             return 1
