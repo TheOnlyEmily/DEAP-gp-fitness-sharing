@@ -25,7 +25,7 @@ def test_get_semantics():
     assert np.all(fsf.get_semantics(xor) == y)
 
 
-class TestGetReward:
+class TestGetFitness:
 
     def test_method_not_implemented(self):
         X = np.array([[0, 1, 0, 1], [0, 0, 1, 1]])
