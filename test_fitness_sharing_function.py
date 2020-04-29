@@ -49,7 +49,7 @@ class TestGetReward:
         class SemDistanceFSF(SemanticFitnessSharingFunction):
 
             def get_fitness(self, ind_semantics):
-                return np.mean((self._cases[1] - ind_semantics) ** 2)
+                return np.mean((self.target_semantics - ind_semantics) ** 2)
 
         fsf = SemDistanceFSF(X, y)
 
@@ -90,7 +90,7 @@ class TestGetSharedFitness:
         class SemDistanceFSF(SemanticFitnessSharingFunction):
 
             def get_fitness(self, ind_semantics):
-                return np.mean((self._cases[1] - ind_semantics) ** 2)
+                return np.mean((self.target_semantics - ind_semantics) ** 2)
 
 
         fsf = SemDistanceFSF(X, y)
@@ -109,7 +109,7 @@ class TestGetSharedFitness:
         class SemDistanceFSF(SemanticFitnessSharingFunction):
 
             def get_fitness(self, ind_semantics):
-                return np.mean((self._cases[1] - ind_semantics) ** 2)
+                return np.mean((self.target_semantics - ind_semantics) ** 2)
 
 
         fsf = SemDistanceFSF(X, y)
@@ -130,7 +130,7 @@ def test_call():
     class SemDistanceFSF(SemanticFitnessSharingFunction):
 
         def get_fitness(self, ind_semantics):
-            return np.mean((self._cases[1] - ind_semantics) ** 2)
+            return np.mean((self.target_semantics - ind_semantics) ** 2)
 
 
     fsf = SemDistanceFSF(X, y)
