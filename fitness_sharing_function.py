@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class FitnessSharingFunction:
+class SemanticFitnessSharingFunction:
 
     def __init__(self, X, y):
         self._cases = [X, y]
