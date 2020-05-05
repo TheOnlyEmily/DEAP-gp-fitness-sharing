@@ -64,7 +64,9 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
 
 X = np.arange(-10, 10) / 10
-y = X**4 + X**3 + X**2
+y = X**4 + X**3 + X**2 + X
+
+eval_ind = SemDistanceFSF(X, y)
 
 def evalSymbReg(individual, points):
     # Transform the tree expression in a callable function
@@ -74,7 +76,8 @@ def evalSymbReg(individual, points):
     sqerrors = ((func(x) - x**4 - x**3 - x**2 - x)**2 for x in points)
     return math.fsum(sqerrors) / len(points),
 
-toolbox.register("evaluate", evalSymbReg, points=[x/10. for x in range(-10,10)])
+#toolbox.register("evaluate", evalSymbReg, points=[x/10. for x in range(-10,10)])
+toolbox.register("evaluate", eval_ind)
 toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
