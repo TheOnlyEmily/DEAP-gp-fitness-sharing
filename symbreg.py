@@ -34,7 +34,7 @@ class SemDistanceFSF(SemanticFitnessSharingFunction):
     def get_fitness(self, ind_semantics):
         sqerrors =  (ind_semantics - self.target_semantics)
         return np.sum(sqerrors / self.target_semantics.size)
-        
+
 
 # Define new functions
 def protectedDiv(left, right):
@@ -62,6 +62,9 @@ toolbox.register("expr", gp.genHalfAndHalf, pset=pset, min_=1, max_=2)
 toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.expr)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
+
+X = np.arange(-10, 10) / 10
+y = X**4 + X**3 + X**2
 
 def evalSymbReg(individual, points):
     # Transform the tree expression in a callable function
