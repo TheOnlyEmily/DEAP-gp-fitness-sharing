@@ -31,6 +31,10 @@ from fitness_sharing_function import SemanticFitnessSharingFunction
 
 class SemDistanceFSF(SemanticFitnessSharingFunction):
 
+    def get_semantics(self, ind):
+        func = toolbox.compile(expr=ind)
+        return super().get_semantics(func)
+
     def get_fitness(self, ind_semantics):
         sqerrors =  (ind_semantics - self.target_semantics)
         return np.sum(sqerrors / self.target_semantics.size)
