@@ -18,12 +18,23 @@ import math
 import random
 
 import numpy
+import numpy as np
 
 from deap import algorithms
 from deap import base
 from deap import creator
 from deap import tools
 from deap import gp
+
+from fitness_sharing_function import SemanticFitnessSharingFunction
+
+
+class SemDistanceFSF(SemanticFitnessSharingFunction):
+
+    def get_fitness(self, ind_semantics):
+        sqerrors =  (ind_semantics - self.target_semantics)
+        return np.sum(sqerrors / self.target_semantics.size)
+        
 
 # Define new functions
 def protectedDiv(left, right):
