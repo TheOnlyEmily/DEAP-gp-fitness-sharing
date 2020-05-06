@@ -1,3 +1,5 @@
+from itertools import starmap
+
 import numpy as np
 
 
