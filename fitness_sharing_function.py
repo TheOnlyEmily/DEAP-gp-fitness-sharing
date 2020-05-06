@@ -21,8 +21,12 @@ class SemanticFitnessSharingFunction:
         raise NotImplementedError()
 
     def get_semantics(self, ind):
+<<<<<<< HEAD
         v_ind = np.vectorize(ind)
         return v_ind(*self._cases[0])
+=======
+        return np.array([ind(*arg) for arg in self._cases[0]])
+>>>>>>> parent of 18818a1... Revert "Update fitness_sharing_function.py"
 
     def get_shared_fitness(self, ind):
         if self._semantic_matrix is not None:
