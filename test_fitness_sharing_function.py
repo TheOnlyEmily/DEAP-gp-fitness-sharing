@@ -4,7 +4,7 @@ from fitness_sharing_function import SemanticFitnessSharingFunction
 
 
 def test_init():
-    X = np.array([[0, 1, 0, 1], [0, 0, 1, 1]])
+    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
     y = np.array([0, 1, 1, 0])
 
     CASE_LIST = [X, y]
@@ -17,7 +17,7 @@ def test_init():
 def test_get_semantics():
     from operator import xor
 
-    X = np.array([[0, 1, 0, 1], [0, 0, 1, 1]])
+    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
     y = np.array([0, 1, 1, 0])
 
     fsf = SemanticFitnessSharingFunction(X, y)
@@ -28,7 +28,7 @@ def test_get_semantics():
 class TestGetFitness:
 
     def test_method_not_implemented(self):
-        X = np.array([[0, 1, 0, 1], [0, 0, 1, 1]])
+        X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
         y = np.array([0, 1, 1, 0])
 
         function_semantics = np.array([0, 0, 0, 1])
@@ -40,7 +40,7 @@ class TestGetFitness:
 
 
     def test_method_implemented(self):
-        X = np.array([[0, 1, 0, 1], [0, 0, 1, 1]])
+        X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
         y = np.array([0, 1, 1, 0])
 
         perfect_solution = np.array([0, 1, 1, 0])
@@ -58,7 +58,7 @@ class TestGetFitness:
 
 
 def test_register_semantics():
-    X = np.array([[0, 1, 0, 1], [0, 0, 1, 1]])
+    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
     y = np.array([0, 1, 1, 0])
 
     IND1 = lambda a, b: a & b
@@ -83,7 +83,7 @@ def test_register_semantics():
 class TestGetSharedFitness:
 
     def test_with_no_semantic_matrix(self):
-        X = np.array([[0, 1, 0, 1], [0, 0, 1, 1]])
+        X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
         y = np.array([0, 1, 1, 0])
 
 
@@ -102,7 +102,7 @@ class TestGetSharedFitness:
         assert fsf.get_shared_fitness(IND) == NO_ADJUSTMENT
 
     def test_with_semantic_matrix(self):
-        X = np.array([[0, 1, 0, 1], [0, 0, 1, 1]])
+        X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
         y = np.array([0, 1, 1, 0])
 
 
@@ -123,7 +123,7 @@ class TestGetSharedFitness:
 
 
 def test_call():
-    X = np.array([[0, 1, 0, 1], [0, 0, 1, 1]])
+    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
     y = np.array([0, 1, 1, 0])
 
 
