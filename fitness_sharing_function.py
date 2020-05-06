@@ -23,7 +23,7 @@ class SemanticFitnessSharingFunction:
         raise NotImplementedError()
 
     def get_semantics(self, ind):
-        return starmap(ind, self._cases[0])
+        return np.array(starmap(ind, self._cases[0]))
 
     def get_shared_fitness(self, ind):
         if self._semantic_matrix is not None:
