@@ -21,7 +21,8 @@ class SemanticFitnessSharingFunction:
         raise NotImplementedError()
 
     def get_semantics(self, ind):
-        return ind(*self._cases[0])
+        v_ind = np.vectorize(ind)
+        return v_ind(self._cases[0])
 
     def get_shared_fitness(self, ind):
         if self._semantic_matrix is not None:
