@@ -29,17 +29,6 @@ from deap import gp
 from fitness_sharing_function import SemanticFitnessSharingFunction
 
 
-class SemDistanceFSF(SemanticFitnessSharingFunction):
-
-    def get_semantics(self, ind):
-        func = toolbox.compile(expr=ind)
-        return super().get_semantics(func)
-
-    def get_fitness(self, ind_semantics):
-        sqerrors =  (ind_semantics - self.target_semantics)
-        return np.sum(sqerrors / self.target_semantics.size)
-
-
 # Define new functions
 def protectedDiv(left, right):
     try:
@@ -67,21 +56,38 @@ toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.ex
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
 
-X = np.arange(-10, 10) / 10
-y = X**4 + X**3 + X**2 + X
-
-eval_ind = SemDistanceFSF(X, y)
-
 def evalSymbReg(individual, points):
     # Transform the tree expression in a callable function
     func = toolbox.compile(expr=individual)
     # Evaluate the mean squared error between the expression
     # and the real function : x**4 + x**3 + x**2 + x
-    sqerrors = ((func(x) - x**4 - x**3 - x**2 - x)**2 for x in points)
+    semantics = [func(x) for x in points]
+    target_semantics = [x**4 + x**3 + x**2 + x for x in points]
+    sqerrors = ((semantics[i] - target_semantics[i])**2 for i in range(len(points)))
     return math.fsum(sqerrors) / len(points),
 
-#toolbox.register("evaluate", evalSymbReg, points=[x/10. for x in range(-10,10)])
-toolbox.register("evaluate", eval_ind)
+
+class SemDistanceFSF(SemanticFitnessSharingFunction):
+
+    def __call__(self, ind):
+        return super().__call__(ind),
+
+    def get_semantics(self, ind):
+        func = toolbox.compile(expr=ind)
+        return super().get_semantics(func)
+
+    def get_fitness(self, ind_semantics):
+        sqerrors =  (ind_semantics - self.target_semantics)**2
+        return np.sum(sqerrors / self.target_semantics.size)
+
+
+X = np.arange(-10, 10) / 10
+y = X**4 + X**3 + X**2 + X
+
+eval_ind = SemDistanceFSF(X, y)
+
+toolbox.register("evaluate", evalSymbReg, points=[x/10. for x in range(-10,10)])
+#toolbox.register("evaluate", eval_ind)
 toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
