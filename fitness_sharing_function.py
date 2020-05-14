@@ -9,6 +9,7 @@ class SemanticFitnessSharingFunction:
         self._delta_error_matrix = None
 
     def __call__(self, delta_error):
+        delta_error = np.array(delta_error)
         self.register_error_vector(delta_error)
         return self.get_shared_fitness(delta_error)
 
@@ -25,4 +26,4 @@ class SemanticFitnessSharingFunction:
             delta_error_stack = (self._delta_error_matrix, delta_error)
             self._delta_error_matrix = np.vstack(delta_error_stack)
         else:
-            self._delta_error_matrix = np.array([np.array(detla_error)])
+            self._delta_error_matrix = np.array([delta_error])
