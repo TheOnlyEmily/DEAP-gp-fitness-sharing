@@ -4,95 +4,31 @@ from fitness_sharing_function import SemanticFitnessSharingFunction
 
 
 def test_init():
-    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-    y = np.array([0, 1, 1, 0])
 
-    CASE_LIST = [X, y]
+    fsf = SemanticFitnessSharingFunction()
 
-    fsf = SemanticFitnessSharingFunction(X, y)
+    assert fsf._delta_error_matrix is None
 
-    assert fsf._cases == CASE_LIST
-    assert fsf._semantic_matrix is None
+def test_register_error_vector():
+    fsf = SemanticFitnessSharingFunction()
 
-def test_get_semantics():
-    from operator import xor
+    DELTA_ERROR1 = np.array([0, 0, 0, 1]) - np.array([0, 1, 1, 0])
+    DELTA_ERROR2 = np.array([0, 1, 1, 1]) - np.array([0, 1, 1, 0])
 
-    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-    y = np.array([0, 1, 1, 0])
+    assert fsf._delta_error_matrix is None
 
-    fsf = SemanticFitnessSharingFunction(X, y)
+    fsf.register_error_vector(DELTA_ERROR1)
 
-    assert np.all(fsf.get_semantics(xor) == y)
+    assert np.all(fsf._semantic_matrix == np.array([DELTA_ERROR1]))
 
+    fsf.register_semantics(DELTA_ERROR2)
 
-class TestGetFitness:
-
-    def test_method_not_implemented(self):
-        X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-        y = np.array([0, 1, 1, 0])
-
-        function_semantics = np.array([0, 0, 0, 1])
-
-        fsf = SemanticFitnessSharingFunction(X, y)
-
-        with pytest.raises(NotImplementedError):
-            fsf.get_fitness(function_semantics)
-
-
-    def test_method_implemented(self):
-        X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-        y = np.array([0, 1, 1, 0])
-
-        perfect_solution = np.array([0, 1, 1, 0])
-        okay_solution = np.array([0, 1, 0, 0])
-
-        class SemDistanceFSF(SemanticFitnessSharingFunction):
-
-            def get_fitness(self, ind_semantics):
-                return np.mean((self.target_semantics - ind_semantics) ** 2)
-
-        fsf = SemDistanceFSF(X, y)
-
-        assert np.all(fsf.get_fitness(perfect_solution) == 0)
-        assert np.all(fsf.get_fitness(okay_solution) > 0)
-
-
-def test_register_semantics():
-    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-    y = np.array([0, 1, 1, 0])
-
-    IND1 = lambda a, b: a & b
-    IND2 = lambda a, b: a ^ b
-
-    fsf = SemanticFitnessSharingFunction(X, y)
-
-    IND_SEMANTICS1 = fsf.get_semantics(IND1)
-    IND_SEMANTICS2 = fsf.get_semantics(IND2)
-
-    assert fsf._semantic_matrix is None
-
-    fsf.register_semantics(IND1)
-
-    assert np.all(fsf._semantic_matrix == np.array([IND_SEMANTICS1]))
-
-    fsf.register_semantics(IND2)
-
-    assert np.all(fsf._semantic_matrix == np.array([IND_SEMANTICS1, IND_SEMANTICS2]))
+    assert np.all(fsf._semantic_matrix == np.array([DELTA_ERROR1, DELTA_ERROR2]))
 
 
 class TestGetSharedFitness:
 
     def test_with_no_semantic_matrix(self):
-        X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-        y = np.array([0, 1, 1, 0])
-
-
-        class SemDistanceFSF(SemanticFitnessSharingFunction):
-
-            def get_fitness(self, ind_semantics):
-                return np.mean((self.target_semantics - ind_semantics) ** 2)
-
-
         fsf = SemDistanceFSF(X, y)
 
         NO_ADJUSTMENT = 1
