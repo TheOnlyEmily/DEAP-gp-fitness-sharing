@@ -61,5 +61,5 @@ def test_call():
     NO_ADJUSTMENT = 1
 
     assert shared_f1 == NO_ADJUSTMENT
-    assert shared_f2 == NO_ADJUSTMENT
-    assert shared_f3 > 1
+    assert shared_f2 > shared_f1
+    assert shared_f3 > shared_f2
