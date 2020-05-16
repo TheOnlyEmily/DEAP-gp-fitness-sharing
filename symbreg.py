@@ -26,8 +26,6 @@ from deap import creator
 from deap import tools
 from deap import gp
 
-from fitness_sharing_function import SemanticFitnessSharingFunction
-
 
 # Define new functions
 def protectedDiv(left, right):
@@ -66,28 +64,7 @@ def evalSymbReg(individual, points):
     sqerrors = ((semantics[i] - target_semantics[i])**2 for i in range(len(points)))
     return math.fsum(sqerrors) / len(points),
 
-
-class SemDistanceFSF(SemanticFitnessSharingFunction):
-
-    def __call__(self, ind):
-        return super().__call__(ind),
-
-    def get_semantics(self, ind):
-        func = toolbox.compile(expr=ind)
-        return super().get_semantics(func)
-
-    def get_fitness(self, ind_semantics):
-        sqerrors =  (ind_semantics - self.target_semantics)**2
-        return np.sum(sqerrors / self.target_semantics.size)
-
-
-X = np.arange(-10, 10) / 10
-y = X**4 + X**3 + X**2 + X
-
-eval_ind = SemDistanceFSF(X, y)
-
 toolbox.register("evaluate", evalSymbReg, points=[x/10. for x in range(-10,10)])
-#toolbox.register("evaluate", eval_ind)
 toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
