@@ -34,7 +34,7 @@ class TestGetSharedFitness:
         NO_ADJUSTMENT = 1
         DELTA_ERROR = np.array([0, 0, 0, 1]) - np.array([0, 1, 1, 0])
 
-        assert fsf._semantic_matrix is None
+        assert fsf._delta_error_matrix is None
         assert fsf.get_shared_fitness(DELTA_ERROR) == NO_ADJUSTMENT
 
     def test_with_delta_error_matrix(self):
@@ -42,7 +42,7 @@ class TestGetSharedFitness:
 
         DELTA_ERROR = np.array([0, 0, 0, 1]) - np.array([0, 1, 1, 0])
 
-        fsf.register_semantics(DELTA_ERROR)
+        fsf.register_error_vector(DELTA_ERROR)
 
         assert fsf.get_shared_fitness(DELTA_ERROR) > 1
 
