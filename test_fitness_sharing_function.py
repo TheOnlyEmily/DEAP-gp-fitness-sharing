@@ -19,67 +19,47 @@ def test_register_error_vector():
 
     fsf.register_error_vector(DELTA_ERROR1)
 
-    assert np.all(fsf._semantic_matrix == np.array([DELTA_ERROR1]))
+    assert np.all(fsf._delta_error_matrix == np.array([DELTA_ERROR1]))
 
-    fsf.register_semantics(DELTA_ERROR2)
+    fsf.register_error_vector(DELTA_ERROR2)
 
-    assert np.all(fsf._semantic_matrix == np.array([DELTA_ERROR1, DELTA_ERROR2]))
+    assert np.all(fsf._delta_error_matrix == np.array([DELTA_ERROR1, DELTA_ERROR2]))
 
 
 class TestGetSharedFitness:
 
-    def test_with_no_semantic_matrix(self):
-        fsf = SemDistanceFSF(X, y)
+    def test_with_no_delta_error_matrix(self):
+        fsf = SemanticFitnessSharingFunction()
 
         NO_ADJUSTMENT = 1
-        IND = lambda a, b: a & b
+        DELTA_ERROR = np.array([0, 0, 0, 1]) - np.array([0, 1, 1, 0])
 
         assert fsf._semantic_matrix is None
-        assert fsf.get_shared_fitness(IND) == NO_ADJUSTMENT
+        assert fsf.get_shared_fitness(DELTA_ERROR) == NO_ADJUSTMENT
 
-    def test_with_semantic_matrix(self):
-        X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-        y = np.array([0, 1, 1, 0])
+    def test_with_delta_error_matrix(self):
+        fsf = SemanticFitnessSharingFunction()
 
+        DELTA_ERROR = np.array([0, 0, 0, 1]) - np.array([0, 1, 1, 0])
 
-        class SemDistanceFSF(SemanticFitnessSharingFunction):
+        fsf.register_semantics(DELTA_ERROR)
 
-            def get_fitness(self, ind_semantics):
-                return np.mean((self.target_semantics - ind_semantics) ** 2)
-
-
-        fsf = SemDistanceFSF(X, y)
-
-        IND = lambda a, b: a & b
-        IND_SEMANTICS = np.array([0, 0, 0, 1])
-
-        fsf.register_semantics(IND)
-
-        assert fsf.get_shared_fitness(IND) > 1
+        assert fsf.get_shared_fitness(DELTA_ERROR) > 1
 
 
 def test_call():
-    X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-    y = np.array([0, 1, 1, 0])
+    fsf = SemanticFitnessSharingFunction()
 
+    DELTA_ERROR1 = np.array([0, 1, 1, 0]) - np.array([0, 1, 1, 0])
+    DELTA_ERROR2 = np.array([0, 0, 0, 1]) - np.array([0, 1, 1, 0])
+    DELTA_ERROR3 = np.array([0, 0, 0, 1]) - np.array([0, 1, 1, 0])
 
-    class SemDistanceFSF(SemanticFitnessSharingFunction):
+    shared_f1 = fsf(DELTA_ERROR1)
+    shared_f2 = fsf(DELTA_ERROR2)
+    shared_f3 = fsf(DELTA_ERROR3)
 
-        def get_fitness(self, ind_semantics):
-            return np.mean((self.target_semantics - ind_semantics) ** 2)
+    NO_ADJUSTMENT = 1
 
-
-    fsf = SemDistanceFSF(X, y)
-
-    IND1 = lambda a, b: a & b
-    IND2 = lambda a, b: a & b
-    IND3 = lambda a, b: a ^ b
-
-    fitness1 = fsf(IND1)
-    fitness2 = fsf(IND2)
-    fitness3 = fsf(IND3)
-
-    assert fitness1 == fsf.get_fitness(fsf.get_semantics(IND1))
-    assert fitness1 < fitness2
-    assert fitness3 < fitness1
-    assert fitness3 == 0
+    assert shared_f1 == NO_ADJUSTMENT
+    assert shared_f2 == NO_ADJUSTMENT
+    assert shared_f3 > 1
