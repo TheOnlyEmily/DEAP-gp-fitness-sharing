@@ -65,15 +65,14 @@ def evalSymbReg(individual, points):
     # and the real function : x**4 + x**3 + x**2 + x
     semantics = [func(x) for x in points]
     target_semantics = [x**4 + x**3 + x**2 + x for x in points]
-    delta_errors = (semantics[i] - target_semantics[i] for i in range(len(points)))
+    delta_errors = [semantics[i] - target_semantics[i] for i in range(len(points))]
 
     sqerrors = list(map(lambda v: v**2, delta_errors))
     error = math.fsum(sqerrors) / len(points)
     error_adjust = fsf(delta_errors)
 
-    return error * error_adjust
+    return (error * error_adjust,)
 
-toolbox.register("evaluate", evalSymbReg, points=[x/10. for x in range(-10,10)])
 toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
@@ -84,6 +83,8 @@ toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max
 
 def control_main():
     random.seed(318)
+
+    toolbox.register("evaluate", evalSymbReg, points=[x/10. for x in range(-10,10)])
 
     pop = toolbox.population(n=300)
     hof = tools.HallOfFame(1)
@@ -96,10 +97,11 @@ def control_main():
     mstats.register("min", numpy.min)
     mstats.register("max", numpy.max)
 
-    pop, log = algorithms.eaSimple(pop, toolbox, 0.5, 0.1, 40, stats=mstats,
+    ITERATIONS = 100
+    pop, log = algorithms.eaSimple(pop, toolbox, 0.5, 0.1, ITERATIONS, stats=mstats,
                                    halloffame=hof, verbose=True)
     # print log
     return pop, log, hof
 
 if __name__ == "__main__":
-    _, control_log, _ = control_main()
+    control_main()
