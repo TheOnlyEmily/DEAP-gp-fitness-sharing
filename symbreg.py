@@ -78,7 +78,7 @@ def evalSymbRegCtrl(individual, points):
     semantics = [func(x) for x in points]
     target_semantics = [x**4 + x**3 + x**2 + x for x in points]
     sqerrors = [(semantics[i] - target_semantics[i])**2 for i in range(len(points))]
-    return math.fsum(sqerrors) / len(points)
+    return math.fsum(sqerrors) / len(points),
 
 toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("mate", gp.cxOnePoint)
