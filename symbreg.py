@@ -73,7 +73,6 @@ def evalSymbRegExp(individual, points):
 
     return (error * error_adjust,)
 
-toolbox.register("evaluate", evalSymbRegExp, points=[x/10. for x in range(-10,10)])
 toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
@@ -83,9 +82,9 @@ toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"), max_v
 toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max_value=17))
 
 def control_main():
-    random.seed(318)
+    toolbox.register("evaluate", evalSymbRegExp, points=[x/10. for x in range(-10,10)])
 
-    toolbox.register("evaluate", evalSymbReg, points=[x/10. for x in range(-10,10)])
+    random.seed(318)
 
     pop = toolbox.population(n=300)
     hof = tools.HallOfFame(1)
