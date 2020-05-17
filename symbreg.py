@@ -26,6 +26,8 @@ from deap import creator
 from deap import tools
 from deap import gp
 
+from fitness_sharing_function import SemanticFitnessSharingFunction
+
 
 # Define new functions
 def protectedDiv(left, right):
@@ -54,6 +56,8 @@ toolbox.register("individual", tools.initIterate, creator.Individual, toolbox.ex
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("compile", gp.compile, pset=pset)
 
+fsf = SemanticFitnessSharingFunction()
+
 def evalSymbReg(individual, points):
     # Transform the tree expression in a callable function
     func = toolbox.compile(expr=individual)
@@ -61,8 +65,13 @@ def evalSymbReg(individual, points):
     # and the real function : x**4 + x**3 + x**2 + x
     semantics = [func(x) for x in points]
     target_semantics = [x**4 + x**3 + x**2 + x for x in points]
-    sqerrors = ((semantics[i] - target_semantics[i])**2 for i in range(len(points)))
-    return math.fsum(sqerrors) / len(points),
+    delta_errors = (semantics[i] - target_semantics[i] for i in range(len(points)))
+
+    sqerrors = list(map(lambda v: v**2, delta_errors))
+    error = math.fsum(sqerrors) / len(points)
+    error_adjust = fsf(delta_errors)
+
+    return error * error_adjust
 
 toolbox.register("evaluate", evalSymbReg, points=[x/10. for x in range(-10,10)])
 toolbox.register("select", tools.selTournament, tournsize=3)
