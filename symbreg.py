@@ -73,6 +73,13 @@ def evalSymbRegExp(individual, points):
 
     return (error * error_adjust,)
 
+def evalSymbRegCtrl(individual, points):
+    func = toolbox.compile(expr=individual)
+    semantics = [func(x) for x in points]
+    target_semantics = [x**4 + x**3 + x**2 + x for x in points]
+    sqerrors = [(semantics[i] - target_semantics[i])**2 for i in range(len(points))]
+    return math.fsum(sqerrors) / len(points)
+
 toolbox.register("select", tools.selTournament, tournsize=3)
 toolbox.register("mate", gp.cxOnePoint)
 toolbox.register("expr_mut", gp.genFull, min_=0, max_=2)
@@ -82,7 +89,7 @@ toolbox.decorate("mate", gp.staticLimit(key=operator.attrgetter("height"), max_v
 toolbox.decorate("mutate", gp.staticLimit(key=operator.attrgetter("height"), max_value=17))
 
 def control_main():
-    toolbox.register("evaluate", evalSymbRegExp, points=[x/10. for x in range(-10,10)])
+    toolbox.register("evaluate", evalSymbRegCtrl, points=[x/10. for x in range(-10,10)])
 
     random.seed(318)
 
