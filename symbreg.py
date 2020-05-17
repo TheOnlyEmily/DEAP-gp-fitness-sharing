@@ -111,4 +111,5 @@ def control_main():
     return pop, log, hof
 
 if __name__ == "__main__":
+    print("Control Run:")
     control_main()
