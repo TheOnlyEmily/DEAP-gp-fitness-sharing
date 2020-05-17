@@ -110,6 +110,30 @@ def control_main():
     # print log
     return pop, log, hof
 
+def experimental_main():
+    toolbox.register("evaluate", evalSymbRegExp, points=[x/10. for x in range(-10,10)])
+
+    random.seed(318)
+
+    pop = toolbox.population(n=300)
+    hof = tools.HallOfFame(1)
+
+    stats_fit = tools.Statistics(lambda ind: ind.fitness.values)
+    stats_size = tools.Statistics(len)
+    mstats = tools.MultiStatistics(fitness=stats_fit, size=stats_size)
+    mstats.register("avg", numpy.mean)
+    mstats.register("std", numpy.std)
+    mstats.register("min", numpy.min)
+    mstats.register("max", numpy.max)
+
+    ITERATIONS = 100
+    pop, log = algorithms.eaSimple(pop, toolbox, 0.5, 0.1, ITERATIONS, stats=mstats,
+                                   halloffame=hof, verbose=True)
+    # print log
+    return pop, log, hof
+
 if __name__ == "__main__":
     print("Control Run:")
     control_main()
+    print("Experimental Run:")
+    experimental_main()
