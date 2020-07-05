@@ -18,7 +18,6 @@ import math
 import random
 
 import numpy
-import numpy as np
 
 from deap import algorithms
 from deap import base
