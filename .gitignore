@@ -1,3 +1,4 @@
 
 *.pyc
 diagnostics.py
+.vscode/settings.json
