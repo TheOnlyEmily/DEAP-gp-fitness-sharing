@@ -1,23 +1,10 @@
-#    This file is part of EAP.
-#
-#    EAP is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Lesser General Public License as
-#    published by the Free Software Foundation, either version 3 of
-#    the License, or (at your option) any later version.
-#
-#    EAP is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-#    GNU Lesser General Public License for more details.
-#
-#    You should have received a copy of the GNU Lesser General Public
-#    License along with EAP. If not, see <http://www.gnu.org/licenses/>.
-
 import operator
 import math
 import random
 
 import numpy
+
+import matplotlib.pyplot as plt
 
 from deap import algorithms
 from deap import base
@@ -58,10 +45,7 @@ toolbox.register("compile", gp.compile, pset=pset)
 fsf = SemanticFitnessSharingFunction()
 
 def evalSymbRegExp(individual, points):
-    # Transform the tree expression in a callable function
     func = toolbox.compile(expr=individual)
-    # Evaluate the mean squared error between the expression
-    # and the real function : x**4 + x**3 + x**2 + x
     semantics = [func(x) for x in points]
     target_semantics = [x**4 + x**3 + x**2 + x for x in points]
     delta_errors = [semantics[i] - target_semantics[i] for i in range(len(points))]
@@ -92,7 +76,7 @@ def control_main():
 
     random.seed(318)
 
-    pop = toolbox.population(n=300)
+    pop = toolbox.population(n=75)
     hof = tools.HallOfFame(1)
 
     stats_fit = tools.Statistics(lambda ind: ind.fitness.values)
@@ -105,7 +89,7 @@ def control_main():
 
     ITERATIONS = 100
     pop, log = algorithms.eaSimple(pop, toolbox, 0.5, 0.1, ITERATIONS, stats=mstats,
-                                   halloffame=hof, verbose=True)
+                                   halloffame=hof, verbose=False)
     # print log
     return pop, log, hof
 
@@ -114,7 +98,7 @@ def experimental_main():
 
     random.seed(318)
 
-    pop = toolbox.population(n=300)
+    pop = toolbox.population(n=75)
     hof = tools.HallOfFame(1)
 
     stats_fit = tools.Statistics(lambda ind: ind.fitness.values)
@@ -127,12 +111,18 @@ def experimental_main():
 
     ITERATIONS = 100
     pop, log = algorithms.eaSimple(pop, toolbox, 0.5, 0.1, ITERATIONS, stats=mstats,
-                                   halloffame=hof, verbose=True)
+                                   halloffame=hof, verbose=False)
     # print log
     return pop, log, hof
 
 if __name__ == "__main__":
-    print("Control Run:")
-    control_main()
-    print("Experimental Run:")
-    experimental_main()
+    _, c_log, _ = control_main()
+    c_fitness_list = c_log.chapters["fitness"].select("min")
+
+    _, e_log, _ = experimental_main()
+    e_fitness_list = e_log.chapters["fitness"].select("min")
+
+    plt.plot(c_fitness_list, label="No Fitness Sharing")
+    plt.plot(e_fitness_list, label="Fitness Sharing")
+    plt.legend()
+    plt.show()
