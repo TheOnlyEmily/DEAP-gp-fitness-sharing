@@ -124,4 +124,6 @@ if __name__ == "__main__":
     plt.plot(c_fitness_list, label="No Fitness Sharing")
     plt.plot(e_fitness_list, label="Fitness Sharing")
     plt.legend()
+    plt.ylabel("Fitness")
+    plt.xlabel("Generations")
     plt.show()
