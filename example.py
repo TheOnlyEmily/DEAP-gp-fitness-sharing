@@ -15,7 +15,6 @@ from deap import gp
 from fitness_sharing_function import SemanticFitnessSharingFunction
 
 
-# Define new functions
 def protectedDiv(left, right):
     try:
         return left / right
