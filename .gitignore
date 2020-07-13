@@ -1,0 +1,7 @@
+diagnostics.py
+fitness_sharing_function.pyc
+.pytest_cache/v/cache/nodeids
+.pytest_cache/v/cache/stepwise
+.vscode/settings.json
+__pycache__/fitness_sharing_function.cpython-37.pyc
+__pycache__/test_fitness_sharing_function.cpython-37-pytest-5.0.1.pyc
